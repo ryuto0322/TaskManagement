@@ -1,0 +1,45 @@
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('タスク編集') }}
+        </h2>
+    </x-slot>
+
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                
+                <h1 class="fs-3 mb-4 fw-bold">タスクを編集</h1>
+
+                <form action="{{ route('tasks.update', $task->id) }}" method="POST">
+                    @csrf
+                    @method('PUT') {{-- 💡 更新の時はこれが必要！ --}}
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-bold">タイトル</label>
+                        <input type="text" name="title" class="form-control" id="title" value="{{ $task->title }}" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label fw-bold">説明</label>
+                        <textarea name="description" class="form-control" id="description" rows="3">{{ $task->description }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="due_date" class="form-label fw-bold">期限</label>
+                        <input type="datetime-local" name="due_date" class = "form-control" id="due_date">
+                    </div>  
+
+                    <div class="d-flex align-items-center gap-3">
+                        <button type="submit" class="btn btn-success">更新する</button>
+                        <a href="{{ route('tasks.index') }}" class="text-secondary text-decoration-none">キャンセル</a>
+                    </div>
+                    <div class="mb-4">
+                        <label for="sort_order" class="block text-sm font-medium text-gray-700">優先順位（数字が小さいほど上に表示されます）</label>
+                        <input type="number" name="sort_order" id="sort_order" value="{{ old('sort_order', $task->sort_order ?? 0) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" min="0">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</x-app-layout>
