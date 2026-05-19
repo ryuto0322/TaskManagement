@@ -18,6 +18,7 @@ class TaskController extends Controller
     // 💡 3. compact('tasks') が正しく入っているか
     return view('tasks.index', compact('tasks'));
 }
+
     // 2. 作成画面表示
     public function create()
     {
@@ -70,4 +71,29 @@ class TaskController extends Controller
 
         return redirect()->route('tasks.index')->with('success', 'タスクの状態を更新しました！');
     }
+    public function moveUp(Task $task){
+        $prebiousTask::where('sort_order','<',$task->sort_order)
+                    ->orderBy('sort_order','desc')
+                    ->first();
+
+        if($previousTask){
+            $currentOrder = $task->sort_order;
+            $task->update(['sort_order' => $prebiousTask->sort_order]);
+            $previousTask->update(['sort_order' => $currentOrder]);
+        }
+        return redirect()->back();
+    }
+    public function moveDown(Task $task){
+        $nexttask = Task::where('sort_order','>',$task->sort_order)
+                        ->orderBy('sort_order','asc')
+                        ->first();
+
+        if($nexttask){
+            $currentOrder = $task->sort_order;
+            $task->update(['sort_order' => $nexttask->sort_order]);
+            $nexttask->update(['sort_order' => $currentOrder]);
+        }
+        return redirect()->back();
+    }
+
 }

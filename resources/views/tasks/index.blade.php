@@ -41,9 +41,21 @@
                                 <td>{{ $task->title }}</td>
                                 <td>{{ $task->description }}</td>
                                 <td>{{$task->due_date}}</td>
-                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <a href="{{ route('tasks.edit', $task) }}" class="bg-red-400 hover:bg-gray-500 text-black font-bold py-3 px-3 rounded text-sm">編集</a>
-                                    </td>
+                              <td style="white-space: nowrap; width: 1px;">
+                                    <div style="display: flex; gap: 6px; align-items: center; justify-content: center;">
+                                        <form action="{{ route('tasks.moveUp', $task) }}" method="POST" style="margin: 0; display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary" style="width: 32px; height: 31px; padding: 0; line-height: 1;">▲</button>
+                                        </form>
+
+                                        <a href="{{ route('tasks.edit', $task) }}" class="btn btn-sm btn-danger" style="height: 31px; display: inline-flex; align-items: center; justify-content: center;">編集</a>
+
+                                        <form action="{{ route('tasks.moveDown', $task) }}" method="POST" style="margin: 0; display: inline;">
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary" style="width: 32px; height: 31px; padding: 0; line-height: 1;">▼</button>
+                                        </form>
+                                    </div>
+                                </td>
 
                                 <td class="px-6 py-4 flex items-center gap-2 whitespace-nowrap">
                                     <form action="{{ route('tasks.complete', $task) }}" method="POST">
