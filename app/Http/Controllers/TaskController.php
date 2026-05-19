@@ -7,12 +7,6 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    // 1. 一覧表示
-   // 1. 一覧表示
-public function index()
-{
-    // sort_order の数字が小さい順（asc）に並び替えて取得する
-    $tasks = Task::orderBy('sort_order', 'asc')->orderBy('created_at', 'desc')->get();
     public function index()
 {
     // 💡 1. 綴りが「orderBy」になっているか（Bが大文字）
@@ -24,9 +18,6 @@ public function index()
     // 💡 3. compact('tasks') が正しく入っているか
     return view('tasks.index', compact('tasks'));
 }
-    return view('tasks.index', compact('tasks'));
-}
-
     // 2. 作成画面表示
     public function create()
     {
