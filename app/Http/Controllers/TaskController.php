@@ -31,9 +31,17 @@ class TaskController extends Controller
         $request->validate([
             'title' => 'required|max:255',
             'description' => 'nullable',
+            'due_date' => 'nullable|date',
         ]);
 
-        Task::create($request->all());
+        $maxOrder = Task::max('sort_order')??0;
+
+        Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'due_date' => $request->due_date,
+            'sort_order' => $maxOrder + 1,
+        ]);
 
         return redirect()->route('tasks.index')->with('success', 'タスクが作成されました。');
     }
@@ -72,13 +80,13 @@ class TaskController extends Controller
         return redirect()->route('tasks.index')->with('success', 'タスクの状態を更新しました！');
     }
     public function moveUp(Task $task){
-        $prebiousTask::where('sort_order','<',$task->sort_order)
-                    ->orderBy('sort_order','desc')
-                    ->first();
+        $previousTask = task::where('sort_order','<',$task->sort_order)
+                            ->orderBy('sort_order','desc')
+                            ->first();
 
         if($previousTask){
             $currentOrder = $task->sort_order;
-            $task->update(['sort_order' => $prebiousTask->sort_order]);
+            $task->update(['sort_order' => $previousTask->sort_order]);
             $previousTask->update(['sort_order' => $currentOrder]);
         }
         return redirect()->back();

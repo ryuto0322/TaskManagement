@@ -9,7 +9,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// 🔄 一旦元の状態に戻します！
+//ダッシュボードアクセス
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -18,11 +18,11 @@ Route::middleware('auth')->group(function (){
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //タスクルート
     Route::patch('tasks/{task}/complete',[TaskController::class, 'complete'])->name('tasks.complete');
     Route::resource('tasks', TaskController::class);
     Route::post('tasks/{task}/move-up',[TaskController::class,'moveUp'])->name('tasks.moveUp');
     Route::post('tasks/{task}/move-down',[TaskController::class,'moveDown'])->name('tasks.moveDown');
-
-require __DIR__.'/auth.php';
-
 });
+require __DIR__.'/auth.php';
