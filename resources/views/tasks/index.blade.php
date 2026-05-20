@@ -33,6 +33,7 @@
                             <th>期限</th>
                             <th>操作</th>
                             <th>完了・削除</th>
+                            <th>優先度</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,9 +77,20 @@
                                             @method('DELETE')
                                             <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded text-xs whitespace-nowrap">
                                                 削除
-                                            </button>                                   
-                                    </form>
+                                            </button> 
+                                    </form>                                   
+                                </td>
+                                <td class=px-6 py-4 text-center whitespace-nowrap text-sm font-medium>
+                                    @if($task->sort_order == 1)  //ブレードディレクティブ
+                                        <span class="text-red-600 font-bold bg-red-500 px-3 py-2 rounded">高</span>
+                                    @elseif($task->sort_order == 2)
+                                        <span class="text-orange-300 font-bold bg-green-500 px-3 py-2 rounded">中</span>
+                                    @else
+                                        <span class="text-green-400 font-bold bg-blue-500 px-3 py-2 rounted">低</span>
+                                    @endif
+                                </td>
                             </tr>
+                            
                         @endforeach
                     </tbody>
                 </table>
