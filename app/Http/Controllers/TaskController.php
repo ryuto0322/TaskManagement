@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-   public function index()
+public function index()
 {
-    // 純粋に sort_order の順番通りに上から並べて取得する
-    $tasks = Task::orderBy('sort_order', 'asc')->get();
+    // 【修正】まだ完了していない（is_completed が false の）タスクだけを並び替えて取得する
+    $tasks = Task::where('is_completed', false)
+                ->orderBy('sort_order', 'asc')
+                ->get();
 
     return view('tasks.index', compact('tasks'));
 }
@@ -129,6 +131,14 @@ class TaskController extends Controller
         }
         
         return redirect()->back();
+    }
+    public function history()
+    {
+        $completedTasks = Task::where('is_completed',true)
+                        ->orderBy('updated_at','desc')
+                        ->get();
+
+        return view('tasks.history',compact('completedTasks'));
     }
 
 }
