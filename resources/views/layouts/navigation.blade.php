@@ -18,6 +18,10 @@
                     <x-nav-link :href="route('tasks.history')" :active="request()->routeIs('tasks.history')">
                         {{ __('完了履歴') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('tasks.delete')" :active="request()->routeIs('tasks.delete')">
+                        {{ __('削除履歴')}}
+                    </x-nav-link>
+
                 </div>
             </div>
 

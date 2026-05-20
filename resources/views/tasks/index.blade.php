@@ -74,10 +74,7 @@
                                     </form>
                                     <form action="{{ route('tasks.destroy', $task) }}" method="POST" class="inline" onsubmit="return confirm('本当に削除しますか？');">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-3 px-4 rounded text-xs whitespace-nowrap">
-                                                削除
-                                            </button> 
+                                            @method('DELETE')<button type="submmit" class="btn btn-danger">削除</button>
                                     </form>                                   
                                 </td>
                                 <td class=px-6 py-4 text-center whitespace-nowrap text-sm font-medium>

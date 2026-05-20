@@ -11,6 +11,7 @@ public function index()
 {
     // 【修正】まだ完了していない（is_completed が false の）タスクだけを並び替えて取得する
     $tasks = Task::where('is_completed', false)
+                ->where('is_deleted',false)
                 ->orderBy('sort_order', 'asc')
                 ->get();
 
@@ -77,9 +78,13 @@ public function index()
     // 6. 削除処理
     public function destroy(Task $task)
     {
-        $task->delete();
+        $task->update([
+            'is_deleted' => true
+        ]);
+    
         return redirect()->route('tasks.index')->with('success', 'タスクが削除されました。');
     }
+
     public function complete(Task $task)//完了処理
     {
         $task->update([
@@ -88,7 +93,9 @@ public function index()
 
         return redirect()->route('tasks.index')->with('success', 'タスクの状態を更新しました！');
     }
-    //上ボタン
+    
+
+
    // 上ボタン (▲)
     public function moveUp(Task $task)
     {
@@ -135,10 +142,18 @@ public function index()
     public function history()
     {
         $completedTasks = Task::where('is_completed',true)
-                        ->orderBy('updated_at','desc')
-                        ->get();
+                            ->orderBy('updated_at','desc')
+                                ->get();
 
         return view('tasks.history',compact('completedTasks'));
+    }
+    public function delete()
+    {
+        $deletedTasks = Task::where('is_deleted',true)
+                            ->orderBy('updated_at','desc')
+                            ->get();
+
+        return view('tasks.delete',compact('deletedTasks'));
     }
 
 }
