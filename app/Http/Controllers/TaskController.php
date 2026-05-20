@@ -52,19 +52,29 @@ class TaskController extends Controller
         return view('tasks.edit', compact('task'));
     }
 
-    // 5. 更新処理
+ // 5. 更新処理
     public function update(Request $request, Task $task)
     {
+        // 1. 入力チェック
         $request->validate([
             'title' => 'required|max:255',
             'description' => 'nullable',
+            'due_date' => 'nullable|date',
         ]);
 
-        $task->update($request->all());
+        // 💡 ここを追加：期限が空っぽ（null）なら、今日の日付を代わりにセットする
+        $dueDate = $request->due_date ?? now()->format('Y-m-d');
+
+        // 2. データベースを更新
+        $task->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'due_date' => $dueDate, // 💡 安全になった日付を入れる
+            'sort_order' => $request->sort_order, // 🟢 「高・中・低」の数字をそのまま保存！
+        ]);
 
         return redirect()->route('tasks.index')->with('success', 'タスクが更新されました。');
     }
-
     // 6. 削除処理
     public function destroy(Task $task)
     {
