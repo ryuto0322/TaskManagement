@@ -27,6 +27,11 @@
                         <label for="due_date" class="form-label fw-bold">期限</label>
                         <input type="datetime-local" name="due_date" class = "form-control" id="due_date">
                     </div>  
+                    <select name="sort_order" id="sort_order" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                            <option value="1" {{ old('sort_order') == 1 ? 'selected' : '' }}>高</option>
+                            <option value="2" {{ old('sort_order') == 2 ? 'selected' : '' }}>中</option>
+                            <option value="3" {{ old('sort_order') == 3 ? 'selected' : '' }}>低</option>
+                        </select>
 
                     <div class="d-flex align-items-center gap-3">
                         <button type="submit" class="btn btn-primary">作成</button>

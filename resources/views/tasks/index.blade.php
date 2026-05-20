@@ -63,7 +63,7 @@
                                         @csrf
                                         @method('PATCH')
                                         @if($task->is_completed)
-                                            <button type="submit" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-1 px-3 rounded text-sm">
+                                            <button type="submit" class="bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 px-3 rounded text-sm">
                                                 戻す
                                             </button>
                                         @else
@@ -81,8 +81,8 @@
                                     </form>                                   
                                 </td>
                                 <td class=px-6 py-4 text-center whitespace-nowrap text-sm font-medium>
-                                    @if($task->sort_order == 1)  //ブレードディレクティブ
-                                        <span class="text-red-600 font-bold bg-red-500 px-3 py-2 rounded">高</span>
+                                    @if($task->sort_order == 1)  
+                                        <span class="text-black font-bold bg-red-500 px-3 py-2 rounded">高</span>
                                     @elseif($task->sort_order == 2)
                                         <span class="text-orange-300 font-bold bg-green-500 px-3 py-2 rounded">中</span>
                                     @else

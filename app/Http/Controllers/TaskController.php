@@ -7,15 +7,11 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    public function index()
+   public function index()
 {
-    // 💡 1. 綴りが「orderBy」になっているか（Bが大文字）
-    // 💡 2. 最後にセミコロン「;」が忘れていないか
-    $tasks = Task::orderBy('sort_order', 'asc')
-                 ->orderBy('created_at', 'desc')
-                 ->get();
-    
-    // 💡 3. compact('tasks') が正しく入っているか
+    // 純粋に sort_order の順番通りに上から並べて取得する
+    $tasks = Task::orderBy('sort_order', 'asc')->get();
+
     return view('tasks.index', compact('tasks'));
 }
 
@@ -32,6 +28,7 @@ class TaskController extends Controller
             'title' => 'required|max:255',
             'description' => 'nullable',
             'due_date' => 'nullable|date',
+            'sort_order' => 'required|integer|in:1,2,3',
         ]);
 
         $maxOrder = Task::max('sort_order')??0;
@@ -89,28 +86,48 @@ class TaskController extends Controller
 
         return redirect()->route('tasks.index')->with('success', 'タスクの状態を更新しました！');
     }
-    public function moveUp(Task $task){
-        $previousTask = task::where('sort_order','<',$task->sort_order)
-                            ->orderBy('sort_order','desc')
+    //上ボタン
+   // 上ボタン (▲)
+    public function moveUp(Task $task)
+    {
+        // 画面上で「1つ上」にある（＝自分より sort_order が小さい）タスクを1つ取得
+        $previousTask = Task::where('sort_order', '<', $task->sort_order)
+                            ->orderBy('sort_order', 'desc') // 自分に一番近い上
                             ->first();
 
-        if($previousTask){
+        if ($previousTask) {
             $currentOrder = $task->sort_order;
+            
+            $task->timestamps = false;
+            $previousTask->timestamps = false;
+
+            // お互いの並び順の数値を入れ替える（これで中身ごと位置が入れ替わります）
             $task->update(['sort_order' => $previousTask->sort_order]);
             $previousTask->update(['sort_order' => $currentOrder]);
         }
+        
         return redirect()->back();
     }
-    public function moveDown(Task $task){
-        $nexttask = Task::where('sort_order','>',$task->sort_order)
-                        ->orderBy('sort_order','asc')
+
+    // 下ボタン (▼)
+    public function moveDown(Task $task)
+    {
+        // 画面上で「1つ下」にある（＝自分より sort_order が大きい）タスクを1つ取得
+        $nextTask = Task::where('sort_order', '>', $task->sort_order)
+                        ->orderBy('sort_order', 'asc') // 自分に一番近い下
                         ->first();
 
-        if($nexttask){
+        if ($nextTask) {
             $currentOrder = $task->sort_order;
-            $task->update(['sort_order' => $nexttask->sort_order]);
-            $nexttask->update(['sort_order' => $currentOrder]);
+            
+            $task->timestamps = false;
+            $nextTask->timestamps = false;
+
+            // お互いの並び順の数値を入れ替える
+            $task->update(['sort_order' => $nextTask->sort_order]);
+            $nextTask->update(['sort_order' => $currentOrder]);
         }
+        
         return redirect()->back();
     }
 
