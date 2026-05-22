@@ -40,7 +40,7 @@ public function index()
             'title' => $request->title,
             'description' => $request->description,
             'due_date' => $request->due_date,
-            'sort_order' => $maxOrder + 1,
+            'sort_order' => $request->sort_order,
         ]);
 
         return redirect()->route('tasks.index')->with('success', 'タスクが作成されました。');
@@ -139,6 +139,7 @@ public function index()
         
         return redirect()->back();
     }
+    //完了履歴
     public function history()
     {
         $completedTasks = Task::where('is_completed',true)
@@ -147,6 +148,7 @@ public function index()
 
         return view('tasks.history',compact('completedTasks'));
     }
+    //削除履歴
     public function delete()
     {
         $deletedTasks = Task::where('is_deleted',true)

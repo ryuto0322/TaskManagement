@@ -13,7 +13,7 @@ class SendLineReminder extends Command
     protected $signature = 'line:remind';
 
     // コマンドの説明
-    protected $description = '今日が期限のタスクをLINEに通知します';
+    protected $description = '期限が切れたをタスクがあります！';
 
     public function handle()
     {

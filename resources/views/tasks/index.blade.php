@@ -77,7 +77,7 @@
                                             @method('DELETE')<button type="submmit" class="btn btn-danger">削除</button>
                                     </form>                                   
                                 </td>
-                                <td class=px-6 py-4 text-center whitespace-nowrap text-sm font-medium>
+                                <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium">
                                     @if($task->sort_order == 1)  
                                         <span class="text-black font-bold bg-red-500 px-3 py-2 rounded">高</span>
                                     @elseif($task->sort_order == 2)
