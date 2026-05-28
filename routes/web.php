@@ -27,6 +27,8 @@ Route::middleware('auth')->group(function (){
     Route::resource('tasks', TaskController::class);
     Route::post('tasks/{task}/move-up',[TaskController::class,'moveUp'])->name('tasks.moveUp');
     Route::post('tasks/{task}/move-down',[TaskController::class,'moveDown'])->name('tasks.moveDown');
+    Route::post('/tasks/{task}/restore-complete', [TaskController::class, 'restoreFromComplete'])->name('tasks.restore_complete');
+    Route::post('/tasks/{task}/restore-delete', [TaskController::class, 'restoreFromDelete'])->name('tasks.restore_delete');
     
 });
 require __DIR__.'/auth.php';

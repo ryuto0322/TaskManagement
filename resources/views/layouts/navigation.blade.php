@@ -12,9 +12,6 @@
                     <x-nav-link :href="route('tasks.index')" :active="request()->routeIs('tasks.index')">
                         {{ __('タスク一覧') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
                     <x-nav-link :href="route('tasks.history')" :active="request()->routeIs('tasks.history')">
                         {{ __('完了履歴') }}
                     </x-nav-link>

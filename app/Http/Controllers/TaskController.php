@@ -4,16 +4,34 @@ namespace App\Http\Controllers;
 
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; 
+use Carbon\Carbon;
 
 class TaskController extends Controller
 {
 public function index()
 {
-    // 【修正】まだ完了していない（is_completed が false の）タスクだけを並び替えて取得する
     $tasks = Task::where('is_completed', false)
                 ->where('is_deleted',false)
                 ->orderBy('sort_order', 'asc')
                 ->get();
+    $now = Carbon::now();
+    $tomorrowEnd = Carbon::tomorrow()->endOfDay();
+
+    foreach($tasks as $task){
+        if(!$task->due_date){
+            $task->is_urgent = false;
+            continue;
+        }
+        $deadline = Carbon::parse($task->due_date);
+
+        if($deadline->between($now,$tomorrowEnd) || $deadline->isPast()){
+            $task->is_urgent = true;
+        }
+        else{
+            $task->is_urgent = false;
+        }
+    }
 
     return view('tasks.index', compact('tasks'));
 }
@@ -78,9 +96,14 @@ public function index()
     // 6. 削除処理
     public function destroy(Task $task)
     {
-        $task->update([
-            'is_deleted' => true
-        ]);
+        // 💡 変更をデータベースに「直接」保存し、Laravelのあらゆるイベント（通知等）を完全にバイパスする
+        $task->is_deleted = true;
+        
+        // 【重要】プラン①を適用するために完了フラグも一応持たせる場合
+        $task->is_completed = true; 
+
+        // 最後の手段：saveQuietly() を使って、全てのイベントリスナやオブザーバーを黙らせて強制保存
+        $task->saveQuietly();
     
         return redirect()->route('tasks.index')->with('success', 'タスクが削除されました。');
     }
@@ -143,6 +166,7 @@ public function index()
     public function history()
     {
         $completedTasks = Task::where('is_completed',true)
+                            ->where('is_deleted',false)
                             ->orderBy('updated_at','desc')
                                 ->get();
 

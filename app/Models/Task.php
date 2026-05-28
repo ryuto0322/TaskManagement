@@ -10,5 +10,5 @@ class Task extends Model
     use HasFactory;
 
     // 保存を許可するカラムを指定
-    protected $fillable = ['title', 'description','due_date','is_completed','sort_order','is_completed','is_deleted',];
+    protected $fillable = ['title', 'description','due_date','is_completed','sort_order','is_completed',];
 }

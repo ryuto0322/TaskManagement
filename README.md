@@ -29,11 +29,11 @@ php artisan migrate
 
 php artisan serve
 
-# 1. mainブランチに移動して最新にする
+ 1. mainブランチに移動して最新にする
 git checkout main
 git pull origin main
 
-# 2. 新しい機能用のブランチを作って切り替える
+ 2. 新しい機能用のブランチを作って切り替える
 git checkout -b feature/task-history
 
 
@@ -41,6 +41,7 @@ git switch -c ブランチ名・・・作業ブランチ切り替え
 
 git push・・・自分のパソコンでコミットした変更をリポジトリにアップロードして反映させるコマンド
 
-
-
-
+サーバー起動手順
+サーバー起動　php artisan serve
+レイアウト起動 npm run dev
+ライン送信起動　php artisan schedule:work
