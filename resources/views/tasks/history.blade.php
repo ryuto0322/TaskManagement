@@ -12,7 +12,7 @@
                 <h1 class="fs-3 mb-4 fw-bold">完了履歴一覧</h1>
 
                 <div class="mb-3">
-                    <a href="{{ route('tasks.index') }}" class="btn btn-secondary">タスク一覧に戻る</a>
+                   <th?><a href="{{ route('tasks.index') }}" class="btn btn-secondary">タスク一覧に戻る</a></th>
                 </div>
 
                 <table class="table table-striped align-middle">

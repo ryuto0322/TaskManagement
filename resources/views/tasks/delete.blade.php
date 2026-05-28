@@ -20,7 +20,7 @@
                         <tr>
                             <th>タイトル</th>
                             <th>説明</th>
-                            <th>完了日時</th>
+                            <th>削除日時</th>
                             <th>優先度</th>
                         </tr>
                     </thead>
@@ -42,7 +42,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="py-4 text-center text-muted">完了したタスクはまだありません。</td>
+                                <td colspan="4" class="py-4 text-center text-muted">削除したタスクはまだありません。</td>
                             </tr>
                         @endforelse
                     </tbody>
